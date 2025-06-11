@@ -1,0 +1,23 @@
+{
+  "kind": "collectionType",
+  "collectionName": "abcs",
+  "info": {
+    "singularName": "abc",
+    "pluralName": "abcs",
+    "displayName": "abc"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "abc_id": {
+      "type": "biginteger",
+      "required": true,
+      "unique": true
+    },
+    "abc_description": {
+      "type": "text"
+    }
+  }
+}
