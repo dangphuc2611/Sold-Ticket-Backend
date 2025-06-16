@@ -43,20 +43,23 @@ export default {
   },
 
   async resetPassword(ctx) {
-    const { email, password } = ctx.request.body;
+    const { email, password, otp } = ctx.request.body;
 
-    const user = await strapi.query('plugin::users-permissions.user').findOne({ where: { email } });
+    // if (!otpStorage[email] || otpStorage[email] !== otp) {
+    //   return ctx.badRequest('Invalid or expired OTP');
+    // }
 
-    if (!user) return ctx.notFound('User not found');
+    const users = await strapi.entityService.findMany('plugin::users-permissions.user', {
+      filters: { email },
+    });
 
-    await strapi.query('plugin::users-permissions.user').update({
-      where: { id: user.id },
-      data: {
-        password,
-      }
+    if (users.length === 0) return ctx.notFound('User not found');
+
+    await strapi.entityService.update('plugin::users-permissions.user', users[0].id, {
+      data: { password },
     });
 
     delete otpStorage[email];
     ctx.send({ message: 'Password updated' });
-  }
+  },
 };
